@@ -17,26 +17,10 @@ app.prepare().then(() => {
 
   server.use(cookieParser())
 
-  server.use('/', (req, res, next) => {
-    const token = req.cookies['x-access-token'];
-    if (token) {
-      jwt.verify(token, 'jwtSecret', (err, decoded) => {
-        if (err) {
-          res.redirect('/login');
-        } else {
-          // if everything is good, save to request for use in other routes
-          req.decoded = decoded;
-          next();
-        }
-      })
-    } else {
-      res.redirect('/login');
-    }
-  })
-
-  server.use('/authenticate', (req, res) => {
+  // Verify username and password, if passed, we return jwt token for client
+  server.post('/authenticate', (req, res) => {
     const { username, password } = req.body
-    if (username === 'test', || password === 'test') {
+    if (username === 'test' || password === 'test') {
       var token = jwt.sign({
         username: username,
         password: password
@@ -56,6 +40,24 @@ app.prepare().then(() => {
     }
   })
 
+  // Authenticate middleware
+  server.use(unless(['/login', '/_next'], (req, res, next) => {
+    const token = req.cookies['x-access-token'];
+    if (token) {
+      jwt.verify(token, 'jwtSecret', (err, decoded) => {
+        if (err) {
+          res.redirect('/login');
+        } else {
+          // if everything is good, save to request for use in other routes
+          req.decoded = decoded;
+          next();
+        }
+      })
+    } else {
+      res.redirect('/login');
+    }
+  }))
+
   server.get('*', (req, res) => {
     return handle(req, res)
   })
@@ -65,3 +67,20 @@ app.prepare().then(() => {
     console.log('> Ready on http://localhost:3000')
   })
 })
+
+function unless (paths, middleware) {
+    return function(req, res, next) {
+        let isHave = false
+        paths.forEach((path) => {
+          if (path === req.path || req.path.includes(path)) {
+            isHave = true
+            return
+          }
+        })
+        if (isHave) {
+          return next()
+        } else {
+            return middleware(req, res, next)
+        }
+    }
+}

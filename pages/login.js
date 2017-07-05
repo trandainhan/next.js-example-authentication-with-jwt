@@ -3,13 +3,11 @@ import Link from 'next/link'
 import Router from 'next/router'
 import Head from 'next/head'
 import axios from 'axios'
-
-import Header from '../components/Header'
 import { setCookie } from '../utils/CookieUtils'
 
 const BASE_URL = "http://localhost:3000"
 
-class NewNoteBook extends Component {
+class Login extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -50,35 +48,33 @@ class NewNoteBook extends Component {
   }
   render () {
     const { username, password , errorMessage } = this.state
-    const loginable = username && password
     return (
       <div style={styles.login}>
-        <p htmlFor="username">{errorMessage}</p>
-        <div className="form-group">
-          <label htmlFor="username">Username:</label>
+        <div style={styles.user}>
+          <div>Username: (test)</div>
           <input
-            className='form-control'
             type="text"
             value={username}
             onChange={this.changeUsername}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="pwd">Password:</label>
+        <div style={styles.password}>
+          <div>Password: (test)</div>
           <input
-            className='form-control'
             type="password"
             value={password}
             onChange={this.changePassword}
           />
         </div>
         <button
-          className='btn btn-default'
           style={styles.button}
           onClick={this.login}
         >
           Login
         </button>
+        <p style={{color: 'red'}}>{errorMessage}</p>
+        <h3>You can not access index page without login</h3>
+        <h3>You can try by changing the url</h3>
       </div>
     )
   }
@@ -92,8 +88,13 @@ const styles = {
   },
   button: {
     marginTop: '10px',
-    marginRight: '10px'
+  },
+  user: {
+    marginTop: '10px'
+  },
+  password: {
+    marginTop: '10px'
   }
 }
 
-export default NewNoteBook
+export default Login
