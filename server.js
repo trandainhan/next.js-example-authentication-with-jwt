@@ -3,6 +3,7 @@ import next from 'next'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import jwt from 'jsonwebtoken'
+import crypto from 'crypto'
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
@@ -18,12 +19,14 @@ app.prepare().then(() => {
   server.use(cookieParser())
 
   // Verify username and password, if passed, we return jwt token for client
+  // We also include xsrfToken for client, which will be used to prevent CSRF attack
   server.post('/authenticate', (req, res) => {
     const { username, password } = req.body
     if (username === 'test' || password === 'test') {
       var token = jwt.sign({
         username: username,
-        password: password
+        password: password,
+        xsrfToken: crypto.createHash('md5').update(username).digest('hex')
       }, 'jwtSecret', {
         expiresIn: 60*60
       });
@@ -57,6 +60,21 @@ app.prepare().then(() => {
       res.redirect('/login');
     }
   }))
+
+  // Api example to prevent CRSF attack
+  server.post('/api/preventCRSF', (req, res, next) => {
+    if (req.decoded.xsrfToken === req.get('X-XSRF-TOKEN')) {
+      res.status(200).json({
+        success: true,
+        message: 'Yes, this api is protected by CRSF attack'
+      })
+    } else {
+      res.status(400).json({
+        success: false,
+        message: 'CRSF attack is useless'
+      })
+    }
+  })
 
   server.get('*', (req, res) => {
     return handle(req, res)

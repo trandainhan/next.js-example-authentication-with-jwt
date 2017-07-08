@@ -1,4 +1,4 @@
-# [Demo](https://nextjs-simple-authentication-with-jwt-lellssdhre.now.sh/)
+# [Demo](https://nextjs-simple-authentication-with-jwt-dgjcfwbaax.now.sh)
 
 # The idea behind
 The very basic auththentication implemetation for next.js with Jsonwebtoken. Basically, we use expressjs to customize the server side, by adding an authentication middleware, this middleware will check the `x-access-token` in every request comming to server.

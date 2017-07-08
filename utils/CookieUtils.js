@@ -5,7 +5,6 @@ export function setCookie(cname, cvalue, exdays) {
   document.cookie = cname + "=" + cvalue + ";" + expires + "HttpOnly;" + ";path=/";
 }
 
-
 export function getCookie(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(';');
