@@ -1,3 +1,6 @@
+# Demo
+https://nextjs-simple-authentication-with-jwt-lellssdhre.now.sh/
+
 # next.js-example-authentication-with-jwt
 
 The very basic implemetation for auththentication with next.js, using Jsonwebtoken.
