@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel-node server.js"
+    "build": "next build && babel ./ --ignore ./node_modules,./dist -d dist",
+    "start": "NODE_ENV=production node dist/server.js"
   },
   "author": "nhantran",
   "license": "ISC",

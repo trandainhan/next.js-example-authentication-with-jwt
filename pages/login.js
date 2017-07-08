@@ -5,8 +5,6 @@ import Head from 'next/head'
 import axios from 'axios'
 import { setCookie } from '../utils/CookieUtils'
 
-const BASE_URL = "http://localhost:3000"
-
 class Login extends Component {
   constructor (props) {
     super(props)
@@ -33,7 +31,7 @@ class Login extends Component {
     const { username, password } = this.state
     if (!username || !password) return
     try {
-      const res = await axios.post(BASE_URL + '/authenticate', this.state)
+      const res = await axios.post(window.location.origin + '/authenticate', this.state)
       if (res.data.success) {
         setCookie('x-access-token', res.data.token)
         Router.push({
