@@ -20,12 +20,12 @@ app.prepare().then(() => {
 
   // Verify username and password, if passed, we return jwt token for client
   // We also include xsrfToken for client, which will be used to prevent CSRF attack
+  // and, you should use random complicated key (JWT Secret) to make brute forcing token very hard
   server.post('/authenticate', (req, res) => {
     const { username, password } = req.body
     if (username === 'test' || password === 'test') {
       var token = jwt.sign({
         username: username,
-        password: password,
         xsrfToken: crypto.createHash('md5').update(username).digest('hex')
       }, 'jwtSecret', {
         expiresIn: 60*60
@@ -44,6 +44,7 @@ app.prepare().then(() => {
   })
 
   // Authenticate middleware
+  // We will apply this middleware to every route except '/login' and '/_next' 
   server.use(unless(['/login', '/_next'], (req, res, next) => {
     const token = req.cookies['x-access-token'];
     if (token) {

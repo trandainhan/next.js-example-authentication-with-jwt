@@ -20,10 +20,10 @@ export default class Index extends Component {
       pathname: '/login'
     })
   }
+  // Use javascript to get jwt-token in cookies which can only
+  // done by JavaScript that runs on your domain can read the cookie
+  // You can override axios request config for general solution
   async _testCSRF () {
-    // Use javascript to get jwt-token in cookies which can only
-    // done by JavaScript that runs on your domain can read the cookie
-    // You can override axios request config for general solution
     const token = getCookie('x-access-token')
     const decoded = jwtDecode(token)
     try {
