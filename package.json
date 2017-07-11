@@ -2,14 +2,14 @@
   "name": "next.js-simple-authentication-with-jwt",
   "version": "1.0.0",
   "description": "Simple authentication with Jsonwebtoken for nextjs",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "build": "next build && babel ./ --ignore ./node_modules,./dist -d dist",
     "dev": "babel-node server.js",
     "start": "NODE_ENV=production node dist/server.js"
   },
   "author": "nhantran",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",
